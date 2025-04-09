@@ -9,6 +9,7 @@ import (
     "sort"
     "strconv"
     "math"
+    "flag"
 )
 
 type TableData struct {
@@ -626,7 +627,44 @@ func findWinner(evaluated_hands [][][]int) []int {
 }
 
 func main() {
-    file, err := os.Open("input_state.json")
+
+    //Parsing cli arguments
+    input_file_path_p := flag.String("i", "", "Path of the input state file")
+	max_iterations_p := flag.Int("iter", 20000, "Number of game iterations")
+    verbose_p := flag.Bool("verbose", true, "Enable verbose output")
+
+	flag.Parse()
+
+    input_file_path := ""
+    max_iterations := 0
+    verbose := false
+
+    if input_file_path_p != nil {
+        input_file_path = *input_file_path_p
+        if input_file_path == "" {
+            fmt.Println("Please specify the input state file! (-i=input_state.json)")
+            os.Exit(0)
+        }
+    }
+
+    if max_iterations_p != nil {
+        max_iterations = *max_iterations_p
+    }
+
+    if verbose_p != nil {
+        verbose = *verbose_p
+    }
+
+	// Custom help
+	if len(os.Args) > 1 && (os.Args[1] == "-h" || os.Args[1] == "--help") {
+		fmt.Println("Usage of", os.Args[0]+":")
+		flag.PrintDefaults()
+		os.Exit(0)
+	}
+
+    fmt.Println("Calculating...")
+
+    file, err := os.Open(input_file_path)
     if err != nil {
         fmt.Println(err)
         return
@@ -641,10 +679,10 @@ func main() {
 
     //TODO Verify for duplicate cards
     //TODO add cli arguments for input file, iterations and optional player data output
+    //TODO on tie split ROI
 
     //fmt.Println(tableData)
 
-    max_iterations := 20000
     start := time.Now()
 
     player_stats := [][]int{}
@@ -735,13 +773,21 @@ func main() {
 
     duration := time.Since(start).Seconds()
 
-    for i := 0; i < tableData.PlayerCount; i++ {
-        fmt.Println("Player " + strconv.Itoa(i+1))
+    if (verbose) {
+        for i := 0; i < tableData.PlayerCount; i++ {
+            fmt.Println("Player " + strconv.Itoa(i+1))
+            fmt.Println("-------------------------")
+            fmt.Println("Win: " + strconv.FormatFloat(float64(float64(player_stats[i][10])/float64(max_iterations)*100), 'f', 2, 64) + "%")
+            fmt.Println()
+            fmt.Println()
+        }
+    } else {
         fmt.Println("-------------------------")
-        fmt.Println("Win: " + strconv.FormatFloat(float64(float64(player_stats[i][10])/float64(max_iterations)*100), 'f', 2, 64) + "%")
         fmt.Println()
-        fmt.Println()
+        fmt.Println("Win: " + strconv.FormatFloat(float64(float64(player_stats[0][10])/float64(max_iterations)*100), 'f', 2, 64) + "%")
     }
-    fmt.Printf("Execution time: %.2f seconds\n", duration)
+    fmt.Println()
+    fmt.Println("-------------------------")
+    fmt.Printf("Execution time: %.2f seconds for %d iterations\n", duration, max_iterations)
 
 }
