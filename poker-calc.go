@@ -662,8 +662,6 @@ func main() {
 		os.Exit(0)
 	}
 
-    fmt.Println("Calculating...")
-
     file, err := os.Open(input_file_path)
     if err != nil {
         fmt.Println(err)
@@ -676,6 +674,16 @@ func main() {
         fmt.Println(err)
         return
     }
+    
+    fmt.Println()
+    fmt.Printf("Community cards: ")
+    fmt.Println(tableData.CommunityCards)
+    fmt.Printf("Your hand: ")
+    fmt.Println(tableData.HandCards)
+    fmt.Printf("Total players: ")
+    fmt.Println(tableData.PlayerCount)
+    fmt.Println()
+    fmt.Println("Calculating...")
 
     //TODO Verify for duplicate cards
     //TODO add cli arguments for input file, iterations and optional player data output
@@ -687,7 +695,7 @@ func main() {
 
     player_stats := [][]int{}
     for i := 0; i < tableData.PlayerCount; i++ {
-        player_stats = append(player_stats, []int{0,0,0,0,0,0,0,0,0,0,0})
+        player_stats = append(player_stats, []int{0,0,0,0,0,0,0,0,0,0,0,0})
     }
 
     //Simulating games
@@ -752,17 +760,23 @@ func main() {
 
         //Log stats
         for i := 0; i < tableData.PlayerCount; i++ {
-            player_stats[i][0] += boolToInt(len(evaluated_hands[i][0]) > 0)
-            player_stats[i][1] += boolToInt(len(evaluated_hands[i][1]) > 0)
-            player_stats[i][2] += boolToInt(len(evaluated_hands[i][2]) > 0)
-            player_stats[i][3] += boolToInt(len(evaluated_hands[i][3]) > 0)
-            player_stats[i][4] += boolToInt(len(evaluated_hands[i][4]) > 0)
-            player_stats[i][5] += boolToInt(len(evaluated_hands[i][5]) > 0)
-            player_stats[i][6] += boolToInt(len(evaluated_hands[i][6]) > 0)
-            player_stats[i][7] += boolToInt(len(evaluated_hands[i][7]) > 0)
-            player_stats[i][8] += boolToInt(len(evaluated_hands[i][8]) > 0)
-            player_stats[i][9] += boolToInt(len(evaluated_hands[i][9]) > 0)
-            player_stats[i][10] += boolToInt(getIntIndex(winning_hand, i) > -1)
+            if (len(evaluated_hands[i][0]) > 0) { player_stats[i][0] += 1 }
+            if (len(evaluated_hands[i][1]) > 0) { player_stats[i][1] += 1 }
+            if (len(evaluated_hands[i][2]) > 0) { player_stats[i][2] += 1 }
+            if (len(evaluated_hands[i][3]) > 0) { player_stats[i][3] += 1 }
+            if (len(evaluated_hands[i][4]) > 0) { player_stats[i][4] += 1 }
+            if (len(evaluated_hands[i][5]) > 0) { player_stats[i][5] += 1 }
+            if (len(evaluated_hands[i][6]) > 0) { player_stats[i][6] += 1 }
+            if (len(evaluated_hands[i][7]) > 0) { player_stats[i][7] += 1 }
+            if (len(evaluated_hands[i][8]) > 0) { player_stats[i][8] += 1 }
+            if (len(evaluated_hands[i][9]) > 0) { player_stats[i][9] += 1 }
+            if (getIntIndex(winning_hand, i) > -1){
+                if (len(winning_hand) == 1) { //Win
+                    player_stats[i][10] += boolToInt(getIntIndex(winning_hand, i) > -1)
+                } else { //Tie
+                    player_stats[i][11] += boolToInt(getIntIndex(winning_hand, i) > -1)
+                }
+            }
         }
 
         //fmt.Println(evaluated_hands)
@@ -778,6 +792,7 @@ func main() {
             fmt.Println("Player " + strconv.Itoa(i+1))
             fmt.Println("-------------------------")
             fmt.Println("Win: " + strconv.FormatFloat(float64(float64(player_stats[i][10])/float64(max_iterations)*100), 'f', 2, 64) + "%")
+            fmt.Println("Tie: " + strconv.FormatFloat(float64(float64(player_stats[i][11])/float64(max_iterations)*100), 'f', 2, 64) + "%")
             fmt.Println()
             fmt.Println()
         }
@@ -785,6 +800,7 @@ func main() {
         fmt.Println("-------------------------")
         fmt.Println()
         fmt.Println("Win: " + strconv.FormatFloat(float64(float64(player_stats[0][10])/float64(max_iterations)*100), 'f', 2, 64) + "%")
+        fmt.Println("Tie: " + strconv.FormatFloat(float64(float64(player_stats[0][11])/float64(max_iterations)*100), 'f', 2, 64) + "%")
     }
     fmt.Println()
     fmt.Println("-------------------------")
