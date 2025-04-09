@@ -1,0 +1,14 @@
+{
+    "community_cards": [
+        "9s",
+        "Ks",
+        "4c",
+        "not_drawn",
+        "not_drawn"
+    ],
+    "hand_cards": [
+        "Ad",
+        "Ah"
+    ],
+    "player_count": 5
+}
