@@ -674,7 +674,7 @@ func main() {
         fmt.Println(err)
         return
     }
-    
+
     fmt.Println()
     fmt.Printf("Community cards: ")
     fmt.Println(tableData.CommunityCards)
@@ -686,10 +686,6 @@ func main() {
     fmt.Println("Calculating...")
 
     //TODO Verify for duplicate cards
-    //TODO add cli arguments for input file, iterations and optional player data output
-    //TODO on tie split ROI
-
-    //fmt.Println(tableData)
 
     start := time.Now()
 
@@ -727,7 +723,6 @@ func main() {
             }
         } 
         table_cards[0] = filled_community_cards
-        //fmt.Println(filled_community_cards)
 
         //Adding own hand
         table_cards[1] = tableData.HandCards
@@ -745,18 +740,11 @@ func main() {
         evaluated_hands := [][][]int{}
         for i := 0; i < tableData.PlayerCount; i++ {
             evaluated_hand := evaluateHand(table_cards[0], table_cards[i+1])
-            //fmt.Println(table_cards[i+1])
-            //fmt.Println(evaluated_hand)
             evaluated_hands = append(evaluated_hands, evaluated_hand)
         }
 
-        //fmt.Println(table_cards)
-        //fmt.Println(evaluated_hands)
-
         //Find winner
         winning_hand := findWinner(evaluated_hands)
-        //fmt.Println(winning_hand)
-        //fmt.Println(i)
 
         //Log stats
         for i := 0; i < tableData.PlayerCount; i++ {
@@ -779,11 +767,7 @@ func main() {
             }
         }
 
-        //fmt.Println(evaluated_hands)
-
     }
-
-    //fmt.Println(player_stats)
 
     duration := time.Since(start).Seconds()
 
@@ -791,19 +775,41 @@ func main() {
         for i := 0; i < tableData.PlayerCount; i++ {
             fmt.Println("Player " + strconv.Itoa(i+1))
             fmt.Println("-------------------------")
-            fmt.Println("Win: " + strconv.FormatFloat(float64(float64(player_stats[i][10])/float64(max_iterations)*100), 'f', 2, 64) + "%")
-            fmt.Println("Tie: " + strconv.FormatFloat(float64(float64(player_stats[i][11])/float64(max_iterations)*100), 'f', 2, 64) + "%")
+            fmt.Println("Win: " + strconv.FormatFloat(float64(float64(player_stats[i][10])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+            fmt.Println("Tie: " + strconv.FormatFloat(float64(float64(player_stats[i][11])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+            fmt.Println()
+            fmt.Println("Royal Flush:     " + strconv.FormatFloat(float64(float64(player_stats[i][0])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+            fmt.Println("Straight Flush:  " + strconv.FormatFloat(float64(float64(player_stats[i][1])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+            fmt.Println("Four of a Kind:  " + strconv.FormatFloat(float64(float64(player_stats[i][2])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+            fmt.Println("Full House:      " + strconv.FormatFloat(float64(float64(player_stats[i][3])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+            fmt.Println("Flush:           " + strconv.FormatFloat(float64(float64(player_stats[i][4])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+            fmt.Println("Straight:        " + strconv.FormatFloat(float64(float64(player_stats[i][5])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+            fmt.Println("Three of a Kind: " + strconv.FormatFloat(float64(float64(player_stats[i][6])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+            fmt.Println("Two Pair:        " + strconv.FormatFloat(float64(float64(player_stats[i][7])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+            fmt.Println("Pair:            " + strconv.FormatFloat(float64(float64(player_stats[i][8])/float64(max_iterations)*100), 'f', 1, 64) + "%")
             fmt.Println()
             fmt.Println()
         }
     } else {
         fmt.Println("-------------------------")
         fmt.Println()
-        fmt.Println("Win: " + strconv.FormatFloat(float64(float64(player_stats[0][10])/float64(max_iterations)*100), 'f', 2, 64) + "%")
-        fmt.Println("Tie: " + strconv.FormatFloat(float64(float64(player_stats[0][11])/float64(max_iterations)*100), 'f', 2, 64) + "%")
+        fmt.Println("Win: " + strconv.FormatFloat(float64(float64(player_stats[0][10])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+        fmt.Println("Tie: " + strconv.FormatFloat(float64(float64(player_stats[0][11])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+        fmt.Println()
+        fmt.Println("Royal Flush:     " + strconv.FormatFloat(float64(float64(player_stats[0][0])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+        fmt.Println("Straight Flush:  " + strconv.FormatFloat(float64(float64(player_stats[0][1])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+        fmt.Println("Four of a Kind:  " + strconv.FormatFloat(float64(float64(player_stats[0][2])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+        fmt.Println("Full House:      " + strconv.FormatFloat(float64(float64(player_stats[0][3])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+        fmt.Println("Flush:           " + strconv.FormatFloat(float64(float64(player_stats[0][4])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+        fmt.Println("Straight:        " + strconv.FormatFloat(float64(float64(player_stats[0][5])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+        fmt.Println("Three of a Kind: " + strconv.FormatFloat(float64(float64(player_stats[0][6])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+        fmt.Println("Two Pair:        " + strconv.FormatFloat(float64(float64(player_stats[0][7])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+        fmt.Println("Pair:            " + strconv.FormatFloat(float64(float64(player_stats[0][8])/float64(max_iterations)*100), 'f', 1, 64) + "%")
+        
     }
     fmt.Println()
     fmt.Println("-------------------------")
     fmt.Printf("Execution time: %.2f seconds for %d iterations\n", duration, max_iterations)
+    fmt.Println()
 
 }
