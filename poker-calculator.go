@@ -178,6 +178,7 @@ func roundToTwoDecimals(num float64) float64 {
 }
 
 func evaluateHand(hand_cards []string, community_cards []string) [][]int {
+    
     seven_cards := append(hand_cards, community_cards...)
 
     //fmt.Println(seven_cards)
@@ -423,6 +424,7 @@ func evaluateHand(hand_cards []string, community_cards []string) [][]int {
     //High card/Kicker
     if (len(available_cards) > 0) {
         kicker := available_cards[getMaxCardIndex(available_cards)]
+        //fmt.Println(kicker)
         combos_list[9] = append(combos_list[9], faceToRank[string(kicker[0])])
     } else {
         combos_list[9] = append(combos_list[9], 0)
@@ -701,20 +703,20 @@ func main() {
     }
 
     //Simulating games
-    for i := 0; i < max_iterations; i++ {
+    for y := 0; y < max_iterations; y++ {
         floatingDeck := getDeck()
 
         //Remove hand cards
         for _, value := range tableData.HandCards {
-            if (!containsStr(floatingDeck, value)) { error("Duplicate cards detected, check the input file and try again") }
             if (len(value) != 2) { error("Invalid card values detected, check the input file and try again") }
+            if (!containsStr(floatingDeck, value)) { error("Duplicate cards detected, check the input file and try again") }
             floatingDeck = removeFromList(floatingDeck, value)
         }
 
         //Remove community cards
         for _, value := range tableData.CommunityCards {
-            if (!containsStr(floatingDeck, value) && value != "not_drawn") { error("Duplicate cards detected, check the input file and try again") }
             if (len(value) != 2 && value != "not_drawn") { error("Invalid card values detected, check the input file and try again") }
+            if (!containsStr(floatingDeck, value) && value != "not_drawn") { error("Duplicate cards detected, check the input file and try again") }
             floatingDeck = removeFromList(floatingDeck, value)
         }
         
@@ -739,6 +741,7 @@ func main() {
 
         //Filling player cards
         for i := 0; i < tableData.PlayerCount; i++ {
+            if (i == 0) { continue } //Skip self
             card1, card2 := "", ""
             card1, floatingDeck = getRemoveRandomCard(floatingDeck)
             card2, floatingDeck = getRemoveRandomCard(floatingDeck)
@@ -748,10 +751,11 @@ func main() {
 
         //Evaluating all hands
         evaluated_hands := [][][]int{}
-        for i := 0; i < tableData.PlayerCount; i++ {
-            evaluated_hand := evaluateHand(table_cards[0], table_cards[i+1])
+        for i := 1; i < tableData.PlayerCount+1; i++ {
+            evaluated_hand := evaluateHand(table_cards[0], table_cards[i])
             evaluated_hands = append(evaluated_hands, evaluated_hand)
         }
+
 
         //Find winner
         winning_hand := findWinner(evaluated_hands)
