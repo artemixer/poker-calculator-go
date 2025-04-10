@@ -265,7 +265,7 @@ func evaluateHand(hand_cards []string, community_cards []string) [][]int {
 
             card1 := seven_cards[findCardByRank(seven_cards, rank)]
             temp_list1 := removeByValueString(seven_cards, card1)
-            card2 := seven_cards[findCardByRank(temp_list1, rank)]
+            card2 := temp_list1[findCardByRank(temp_list1, rank)]
 
             pairs_cards = append(pairs_cards, []string{card1, card2})
         } else if (count == 3) {
@@ -273,9 +273,9 @@ func evaluateHand(hand_cards []string, community_cards []string) [][]int {
 
             card1 := seven_cards[findCardByRank(seven_cards, rank)]
             temp_list1 := removeByValueString(seven_cards, card1)
-            card2 := seven_cards[findCardByRank(temp_list1, rank)]
+            card2 := temp_list1[findCardByRank(temp_list1, rank)]
             temp_list2 := removeByValueString(temp_list1, card1)
-            card3 := seven_cards[findCardByRank(temp_list2, rank)]
+            card3 := temp_list2[findCardByRank(temp_list2, rank)]
 
             three_kind_cards = append(three_kind_cards, []string{card1, card2, card3})
         } else if (count == 4) {
@@ -283,11 +283,11 @@ func evaluateHand(hand_cards []string, community_cards []string) [][]int {
 
             card1 := seven_cards[findCardByRank(seven_cards, rank)]
             temp_list1 := removeByValueString(seven_cards, card1)
-            card2 := seven_cards[findCardByRank(temp_list1, rank)]
+            card2 := temp_list1[findCardByRank(temp_list1, rank)]
             temp_list2 := removeByValueString(temp_list1, card1)
-            card3 := seven_cards[findCardByRank(temp_list2, rank)]
+            card3 := temp_list2[findCardByRank(temp_list2, rank)]
             temp_list3 := removeByValueString(temp_list2, card1)
-            card4 := seven_cards[findCardByRank(temp_list3, rank)]
+            card4 := temp_list3[findCardByRank(temp_list3, rank)]
 
             four_kind_cards = append(four_kind_cards, []string{card1, card2, card3, card4})
         }
