@@ -16,7 +16,8 @@ go build poker-calculator.go
 ./poker-calculator -i input_state.json -iter 50000 -verbose false
 ```
 Output:
-<br/><br/><img width="349" alt="Screenshot 2025-04-10 at 02 58 57" src="https://github.com/user-attachments/assets/5c0eb309-d58b-4adf-a7a0-0cc3e6603f13" />
+<br/><br/><img width="305" alt="Screenshot" src="https://github.com/user-attachments/assets/de4b2e10-fecf-42ee-8ca8-bbfed397ae5b" />
+
 
 The tool reads the current game state from the input file (```-i``` parameter), a sample file is included in the repository. The cards in the file are
 contained in the format where ```Ah``` stands for Ace of Hearts and ```Tc``` is the 10 of Clubs. The community cards not yet revealed should be replaced with
