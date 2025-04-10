@@ -274,7 +274,7 @@ func evaluateHand(hand_cards []string, community_cards []string) [][]int {
             card1 := seven_cards[findCardByRank(seven_cards, rank)]
             temp_list1 := removeByValueString(seven_cards, card1)
             card2 := temp_list1[findCardByRank(temp_list1, rank)]
-            temp_list2 := removeByValueString(temp_list1, card1)
+            temp_list2 := removeByValueString(temp_list1, card2)
             card3 := temp_list2[findCardByRank(temp_list2, rank)]
 
             three_kind_cards = append(three_kind_cards, []string{card1, card2, card3})
@@ -284,9 +284,9 @@ func evaluateHand(hand_cards []string, community_cards []string) [][]int {
             card1 := seven_cards[findCardByRank(seven_cards, rank)]
             temp_list1 := removeByValueString(seven_cards, card1)
             card2 := temp_list1[findCardByRank(temp_list1, rank)]
-            temp_list2 := removeByValueString(temp_list1, card1)
+            temp_list2 := removeByValueString(temp_list1, card2)
             card3 := temp_list2[findCardByRank(temp_list2, rank)]
-            temp_list3 := removeByValueString(temp_list2, card1)
+            temp_list3 := removeByValueString(temp_list2, card3)
             card4 := temp_list3[findCardByRank(temp_list3, rank)]
 
             four_kind_cards = append(four_kind_cards, []string{card1, card2, card3, card4})
@@ -422,12 +422,10 @@ func evaluateHand(hand_cards []string, community_cards []string) [][]int {
     }
 
     //High card/Kicker
-    if (len(available_cards) > 0) {
+    for i := 0; i < len(available_cards); i++ {
         kicker := available_cards[getMaxCardIndex(available_cards)]
-        //fmt.Println(kicker)
+        available_cards = removeFromList(available_cards, kicker)
         combos_list[9] = append(combos_list[9], faceToRank[string(kicker[0])])
-    } else {
-        combos_list[9] = append(combos_list[9], 0)
     }
 
     return combos_list
@@ -590,12 +588,14 @@ func compareHands(hand1 [][]int, hand2 [][]int) int {
     }
 
     //High card/Kicker
-    if (hand1[9][0] > hand2[9][0]) {
-        return -1
-    } else if (hand1[9][0] < hand2[9][0]) {
-        return 1
-    } else if (hand1[9][0] == hand2[9][0]) {
-        return 0
+    for i := 0; i < len(hand2[9]); i++ { 
+        if (hand1[9][i] > hand2[9][i]) {
+            return -1
+        } else if (hand1[9][i] < hand2[9][i]) {
+            return 1
+        } else if (hand1[9][i] == hand2[9][i]) {
+            continue
+        }
     }
 
     return 0
