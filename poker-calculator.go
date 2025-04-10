@@ -25,7 +25,7 @@ var faceToRank = map[string]int{
 }
 
 func getDeck() []string {
-	values := []string{"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"}
+	values := []string{"2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"}
     suits := []string{"s", "c", "d", "h"}
     var deck []string
 
@@ -52,8 +52,8 @@ func removeFromList(slice []string, value string) []string {
 }
 
 func containsStr(slice []string, value string) bool {
-    for _, item := range slice {
-        if item == value {
+    for index, _ := range slice {
+        if slice[index] == value {
             return true
         }
     }
@@ -626,6 +626,12 @@ func findWinner(evaluated_hands [][][]int) []int {
     return current_winner
 }
 
+func error (text string) {
+    fmt.Println("[!] Error: " + text)
+    time.Sleep(1 * time.Second)
+    os.Exit(1)
+}
+
 func main() {
 
     //Parsing cli arguments
@@ -675,6 +681,8 @@ func main() {
         return
     }
 
+
+
     fmt.Println()
     fmt.Printf("Community cards: ")
     fmt.Println(tableData.CommunityCards)
@@ -684,8 +692,6 @@ func main() {
     fmt.Println(tableData.PlayerCount)
     fmt.Println()
     fmt.Println("Calculating...")
-
-    //TODO Verify for duplicate cards
 
     start := time.Now()
 
@@ -700,11 +706,15 @@ func main() {
 
         //Remove hand cards
         for _, value := range tableData.HandCards {
+            if (!containsStr(floatingDeck, value)) { error("Duplicate cards detected, check the input file and try again") }
+            if (len(value) != 2) { error("Invalid card values detected, check the input file and try again") }
             floatingDeck = removeFromList(floatingDeck, value)
         }
 
         //Remove community cards
         for _, value := range tableData.CommunityCards {
+            if (!containsStr(floatingDeck, value) && value != "not_drawn") { error("Duplicate cards detected, check the input file and try again") }
+            if (len(value) != 2 && value != "not_drawn") { error("Invalid card values detected, check the input file and try again") }
             floatingDeck = removeFromList(floatingDeck, value)
         }
         
